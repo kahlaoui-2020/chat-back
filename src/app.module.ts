@@ -18,6 +18,11 @@ import { MessageEntity } from './entities/message.entity';
     "entities": [UserEntity, DiscussionEntity, MessageEntity],
     "synchronize": true
   })],
+=======
+import { UsersModule } from './users/users.module';
+
+@Module({
+  imports: [UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })
