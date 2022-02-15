@@ -7,13 +7,14 @@ import { UserEntity } from './entities/user.entity';
 import { DiscussionEntity } from './entities/discussion.entity';
 import { MessageEntity } from './entities/message.entity';
 import { UsersModule } from './users/users.module';
-
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
     UsersModule, 
     AuthModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       "type": "mysql",
       "host": process.env.MYSQL_URL,
