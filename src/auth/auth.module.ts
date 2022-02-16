@@ -10,6 +10,7 @@ import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
+    exports: [AuthService],
     imports: [
         PassportModule,
         JwtModule.register({

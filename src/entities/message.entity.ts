@@ -1,7 +1,7 @@
 import { text } from 'stream/consumers';
 import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 
-@Entity('Message')
+@Entity('message')
 export class MessageEntity {
     @PrimaryGeneratedColumn('increment') id:string;
     @Column('uuid') sender: string;
