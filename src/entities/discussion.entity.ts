@@ -5,6 +5,6 @@ export class DiscussionEntity {
     @PrimaryGeneratedColumn('uuid') id:string;
     @Column('uuid') userI: string
     @Column('uuid') userII: string
-    @Column('timestamp') viewI: Timestamp;
-    @Column('timestamp') viewII: Timestamp;
+    @Column('timestamp', {nullable: true}) viewI: Timestamp;
+    @Column('timestamp', {nullable: true}) viewII: Timestamp;
 }
