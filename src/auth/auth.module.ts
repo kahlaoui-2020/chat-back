@@ -12,6 +12,7 @@ import { UsersModule } from 'src/users/users.module';
 import { UsersService } from 'src/users/users.service';
 
 @Module({
+    exports: [AuthService],
     imports: [
         PassportModule,
         JwtModule.register({

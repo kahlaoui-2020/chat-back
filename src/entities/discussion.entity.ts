@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
 
-@Entity('Discussion')
+@Entity('discussion')
 export class DiscussionEntity {
     @PrimaryGeneratedColumn('uuid') id:string;
     @Column('uuid') userI: string
