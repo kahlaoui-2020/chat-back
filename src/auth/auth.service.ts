@@ -2,29 +2,42 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable } from '@nestjs/common';
-import {JwtService} from '@nestjs/jwt';
-import { User } from 'src/users/entities/user.model';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UserEntity } from 'src/entities/user.entity';
+import { Login } from 'src/models/login.model';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
-export class AuthService { 
+export class AuthService {
     constructor(
         private userService: UsersService,
-        private jwtService: JwtService) {}
+        private jwtService: JwtService) { }
 
-   async login(email: string, pass: string): Promise<User | null>  {
-       const user = await this.userService.findByEmail(email);
-       if(user && user.password === pass) {
-           const {password, ...result} = user;
-           return result;
+    async validateUser(email: string, pass: string): Promise<any> {
+        const user = await this.userService.findByEmail(email);
+        if (user) return user
+        throw new Error()
+    }
 
-       }
-       return null
-   }
+    async login(login: Login) {
+        let user: UserEntity;
+        try {
+            user = await this.validateUser(login.email, login.password);
 
-   async getJwtUser(user: User) {
-       const payload = { email: user, sub: user}
-       return {access_token: this.jwtService.sign(payload)}
-   }
+        } catch (err) {
+            throw new UnauthorizedException(
+                `There isn't any user with email: ${login.email}`,
+            );
+        }
+        if (!(await user.checkPassword(login.password)))
+            throw new UnauthorizedException(
+                `Wrong password for user with email: ${login.email}`,
+            );
+
+
+        const payload = { email: user.email, userId: user.id }
+        return { access_token: this.jwtService.sign(payload) }
+    }
+
 }
