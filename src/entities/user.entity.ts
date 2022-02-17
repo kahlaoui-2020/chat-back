@@ -12,4 +12,8 @@ export class UserEntity {
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;
 
+    async checkPassword(pass: string): Promise<boolean> {
+        return await pass === this.password
+    }
+
 }
