@@ -10,6 +10,8 @@ import { jwtConstants } from './constants';
 import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from 'src/users/users.module';
 import { UsersService } from 'src/users/users.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserEntity } from 'src/entities/user.entity';
 
 @Module({
     exports: [AuthService],
@@ -19,6 +21,7 @@ import { UsersService } from 'src/users/users.service';
             secret: jwtConstants.secret,
             signOptions: {expiresIn: '60s'}
         }),
+        UsersModule
     ],
     controllers: [],
     providers: [AuthService, LocalStrategy, UsersService],
