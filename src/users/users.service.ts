@@ -14,9 +14,8 @@ export class UsersService {
     private userRepository: Repository<UserEntity>
     ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.userRepository.create(createUserDto)
-    console.log(user)
     const user_1 = await this.userRepository.save(user);
     return user_1;
   }
@@ -25,8 +24,8 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string): Promise<User> {
+    return await this.userRepository.findOne(id)
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -38,6 +37,6 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({where: {email: email}})
+    return await this.userRepository.findOne({where: {email: email}, select: ['id', 'password']})
   }
 }
