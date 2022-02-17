@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { use } from 'passport';
 import { UserEntity } from 'src/entities/user.entity';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.model';
@@ -16,8 +17,9 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = this.userRepository.create(createUserDto)
-    const user_1 = await this.userRepository.save(user);
-    return user_1;
+    const userObject = await this.userRepository.save(user);
+    const {password, ...result} = userObject
+    return result;
   }
 
   findAll() {
@@ -32,8 +34,8 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string): Promise<DeleteResult> {
+   return await this.userRepository.delete(id)
   }
 
   async findByEmail(email: string): Promise<User> {
