@@ -9,6 +9,7 @@ import { User } from './entities/user.model';
 
 @Injectable()
 export class UsersService {
+  
 
   constructor(
     @InjectRepository(UserEntity)
@@ -40,5 +41,9 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({where: {email: email}, select: ['id', 'password']})
+  }
+
+  async findMe(user: User): Promise<User> {
+    return await this.userRepository.findOne({where: {id: user.id}})
   }
 }
