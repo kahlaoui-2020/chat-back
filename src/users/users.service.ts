@@ -9,6 +9,7 @@ import { User } from './entities/user.model';
 
 @Injectable()
 export class UsersService {
+  
 
   constructor(
     @InjectRepository(UserEntity)
@@ -30,8 +31,9 @@ export class UsersService {
     return await this.userRepository.findOne(id)
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user =  await this.userRepository.update(id, updateUserDto);
+    return user.affected; 
   }
 
   async remove(id: string): Promise<DeleteResult> {
@@ -40,5 +42,9 @@ export class UsersService {
 
   async findByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({where: {email: email}, select: ['id', 'password']})
+  }
+
+  async findMe(user: User): Promise<User> {
+    return await this.userRepository.findOne({where: {id: user.id}})
   }
 }
