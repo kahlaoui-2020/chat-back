@@ -30,9 +30,9 @@ export class UsersController {
   findMe(@GetJwt() user: User) {
     return this.usersService.findMe(user);
     }
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  @Patch()
+  update(@GetJwt() user: User, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.update(user.id, updateUserDto);
   }
 
   @Delete(':id')

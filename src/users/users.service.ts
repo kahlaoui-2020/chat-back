@@ -31,8 +31,9 @@ export class UsersService {
     return await this.userRepository.findOne(id)
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    const user =  await this.userRepository.update(id, updateUserDto);
+    return user.affected; 
   }
 
   async remove(id: string): Promise<DeleteResult> {
