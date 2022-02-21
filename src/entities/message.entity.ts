@@ -1,6 +1,6 @@
 import { text } from 'stream/consumers';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Timestamp } from 'typeorm';
-import { DiscussionEntity } from './discussion.entity';
+import { RoomEntity } from './room.entity';
 
 @Entity('message')
 export class MessageEntity {
@@ -9,6 +9,6 @@ export class MessageEntity {
     @Column('uuid') discussionID: string;
     @Column({type: 'text', nullable: true}) content: string;
     @Column('timestamp') creationDate: Timestamp;
-    @ManyToOne(type => DiscussionEntity, room => room.messages)
-    room:DiscussionEntity;
+    @ManyToOne(type => RoomEntity, room => room.messages)
+    room:RoomEntity;
 }
