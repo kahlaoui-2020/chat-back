@@ -8,6 +8,7 @@ import { DiscussionEntity } from './entities/discussion.entity';
 import { MessageEntity } from './entities/message.entity';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { RoomEntity } from './entities/room.entity';
 
 
 @Module({
@@ -22,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
       "username": process.env.MYSQL_USER,
       "password": process.env.MYSQL_PASSWORD,
       "database": process.env.MYSQL_DB,
-      "entities": [UserEntity, DiscussionEntity, MessageEntity],
+      "entities": [UserEntity, RoomEntity, MessageEntity],
       "synchronize": true
     })],
   controllers: [AppController],
