@@ -2,8 +2,8 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Timestamp
 import { MessageEntity } from './message.entity';
 import { UserEntity } from './user.entity';
 
-@Entity('discussion')
-export class DiscussionEntity {
+@Entity('room')
+export class RoomEntity {
     @PrimaryGeneratedColumn('uuid') id:string;
     @Column('uuid') userI: string
     @Column('uuid') userII: string
