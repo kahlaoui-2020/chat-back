@@ -9,6 +9,7 @@ import { MessageEntity } from './entities/message.entity';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoomEntity } from './entities/room.entity';
+import { RoomsModule } from './rooms/rooms.module';
 
 
 @Module({
@@ -25,7 +26,8 @@ import { RoomEntity } from './entities/room.entity';
       "database": process.env.MYSQL_DB,
       "entities": [UserEntity, RoomEntity, MessageEntity],
       "synchronize": true
-    })],
+    }),
+    RoomsModule],
   controllers: [AppController],
   providers: [AppService],
 })
