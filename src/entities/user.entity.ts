@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RoomEntity } from './room.entity';
 
 @Entity('user')
@@ -12,8 +12,8 @@ export class UserEntity {
     @Column({select: false}) password: string;
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;
-    @OneToMany(type => UserEntity, user => user.id)
-    friends: UserEntity[];
+    @Column('simple-array')
+    friends: string[] = [];
     
     async checkPassword(pass: string): Promise<boolean> {
         return await pass === this.password
