@@ -12,9 +12,9 @@ export class UserEntity {
     @Column({select: false}) password: string;
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;
-    @OneToMany(type => RoomEntity, room => room.user)
-    rooms: RoomEntity[];
-
+    @OneToMany(type => UserEntity, user => user.id)
+    friends: UserEntity[];
+    
     async checkPassword(pass: string): Promise<boolean> {
         return await pass === this.password
     }
