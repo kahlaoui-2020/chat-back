@@ -22,7 +22,12 @@ export class UsersService {
     const {password, ...result} = userObject
     return result;
   }
-
+  async createFriend(id: string, idFriend: string): Promise<any>{
+    const user = await this.userRepository.findOne(id, {select: ['id', 'friends']});
+    user.friends.push(idFriend);
+    const friend = await this.userRepository.update(id, user);
+    return friend;
+  }
   findAll() {
     return `This action returns all users`;
   }
@@ -46,5 +51,8 @@ export class UsersService {
 
   async findMe(user: User): Promise<User> {
     return await this.userRepository.findOne({where: {id: user.id}})
+  }
+  async findFriends(user: User): Promise<User[]> {
+    return await this.userRepository.find({where: {id: user.id}, select: ['friends']})
   }
 }
