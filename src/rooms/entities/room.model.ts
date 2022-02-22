@@ -5,6 +5,6 @@ export interface Room {
     id:string,
     userI: User,
     userII: User,
-    viewI: Timestamp,
-    viewII: Timestamp,
+    viewI: Timestamp<Date>,
+    viewII: Timestamp<Date>,
 }

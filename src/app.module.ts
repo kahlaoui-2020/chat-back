@@ -4,7 +4,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
-import { DiscussionEntity } from './entities/discussion.entity';
 import { MessageEntity } from './entities/message.entity';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
