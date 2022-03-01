@@ -4,7 +4,9 @@ https://docs.nestjs.com/websockets/gateways#gateways
 
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit } from '@nestjs/websockets';
 
-@WebSocketGateway()
+@WebSocketGateway({
+    cors: true,
+})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
 
     @WebSocketServer()
