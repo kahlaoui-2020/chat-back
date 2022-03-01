@@ -1,3 +1,4 @@
+import { ChatGateway } from './chat.gateway';
 import { AuthModule } from './auth/auth.module';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
@@ -13,7 +14,7 @@ import { RoomsModule } from './rooms/rooms.module';
 
 @Module({
   imports: [
-    UsersModule, 
+    UsersModule,
     AuthModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
@@ -28,6 +29,7 @@ import { RoomsModule } from './rooms/rooms.module';
     }),
     RoomsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    ChatGateway, AppService],
 })
 export class AppModule { }
