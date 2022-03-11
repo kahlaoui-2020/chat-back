@@ -15,7 +15,6 @@ export class AppController {
 
   @Post('auth/login')
   async login(@Body() body: Login) {
-    console.log(body);
     return this.authService.login(body)
   }
   @Post('auth/sign-up')
