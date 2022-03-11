@@ -25,11 +25,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
         private cacheManager: Cache) { }
 
     @SubscribeMessage('message')
-    async handleEvent(client: Socket, @MessageBody() { sender,  to, message, }) {
+    async handleEvent(client: Socket, @MessageBody() { sender,  to, message, roomId }) {
         console.log(to)
         const socket = await this.cacheManager.get(to).then((u: string) => {return u}); 
         console.log('to: ', socket, ', message: ', message)
-        this.server.to(socket).emit('message', message, sender);
+        this.server.to(socket).emit('message', message, sender, roomId);
        // this.server.send(message);
     }
 
