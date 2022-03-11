@@ -12,8 +12,6 @@ export class UserEntity {
     @Column({select: false}) password: string;
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;
-    @Column('simple-array')
-    friends: string[] = [];
     
     async checkPassword(pass: string): Promise<boolean> {
         return await pass === this.password

@@ -40,4 +40,8 @@ export class AuthService {
         return { access_token: this.jwtService.sign(payload) }
     }
 
+    decode(token: string): {email: string, userId: string} {
+        return this.jwtService.decode(token) as { email: string, userId: string}
+    }
+
 }

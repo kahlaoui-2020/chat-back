@@ -17,7 +17,7 @@ export class UsersController {
   }
   @Post('friend')
   createFriend(@GetJwt() user: User, @Body() body: any) {
-    return this.usersService.createFriend(user.id, body.id);
+    return this.usersService.createFriend(user.id, body.idFriend);
   }
   @Get()
   findAll() {
@@ -33,7 +33,7 @@ export class UsersController {
   }
   @Get('me/friends/')
   findFriends(@GetJwt() user: User) {
-    return this.usersService.findFriends(user);
+    return this.usersService.findFriends(user.id);
   }
   @Patch()
   update(@GetJwt() user: User, @Body() updateUserDto: UpdateUserDto) {
