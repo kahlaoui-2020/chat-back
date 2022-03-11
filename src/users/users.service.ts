@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
+import { FriendsEntity } from 'src/entities/friends.entity';
 import { UserEntity } from 'src/entities/user.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { Connection, DeleteResult, getManager, getRepository, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.model';
@@ -13,7 +14,9 @@ export class UsersService {
 
   constructor(
     @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
+    private userRepository: Repository<UserEntity>,
+    @InjectRepository(FriendsEntity)
+    private friendsRepository: Repository<FriendsEntity>
     ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
@@ -23,10 +26,9 @@ export class UsersService {
     return result;
   }
   async createFriend(id: string, idFriend: string): Promise<any>{
-    const user = await this.userRepository.findOne(id, {select: ['id', 'friends']});
-    user.friends.push(idFriend);
-    const friend = await this.userRepository.update(id, user);
-    return friend;
+    const friend = await this.friendsRepository.create({userI: id, userII: idFriend})
+    const result = await this.friendsRepository.save(friend)
+    return result;
   }
   findAll() {
     return `This action returns all users`;
@@ -52,7 +54,23 @@ export class UsersService {
   async findMe(user: User): Promise<User> {
     return await this.userRepository.findOne({where: {id: user.id}})
   }
-  async findFriends(user: User): Promise<User[]> {
-    return await this.userRepository.find({where: {id: user.id}, select: ['friends']})
+  async findFriends(id: string): Promise<any[]> {
+    const ids: any = getManager().createQueryBuilder(FriendsEntity, 'friend')
+    .select(
+      `CASE
+        WHEN userI = '${id}' THEN userII
+        WHEN userII = '${id}' THEN userI
+        END`, 'id')
+    .having('id is not null');
+    const result =  this.userRepository.createQueryBuilder('user')
+        .select(['user.lastName as lastName', 'user.firstName as firstName'])
+        .innerJoinAndSelect('('+ids.getQuery()+')', 'friend', 'friend.id = user.id')
+        .addSelect('friend.id')
+        .getRawMany();
+    return result;
   }
+
+  // async findFriendsId(id: string): Promise<string[]> {
+  //   const ids: string[] = this.friendsRepository.find({})
+  // }
 }
