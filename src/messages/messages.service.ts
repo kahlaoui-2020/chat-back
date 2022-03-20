@@ -21,12 +21,17 @@ export class MessagesService {
     return await this.messageRepository.save(message);
   }
 
-  async findAll(id: string, idRoom: string) {
-    const room = this.roomRepository.create({id})
-    const result = await this.messageRepository.find({where: {
-      room: room,
-    }})
-    return `This action returns all messages`;
+  async findAll(room: any) {
+    const roomObj = this.roomRepository.create({id: room.id})
+    const result = await this.messageRepository.find({
+      where: {
+        room: roomObj,
+      
+      },
+      take: room.limit,
+      skip: room.skip
+    })
+    return result;
   }
 
   findOne(id: number) {
@@ -41,3 +46,4 @@ export class MessagesService {
     return `This action removes a #${id} message`;
   }
 }
+

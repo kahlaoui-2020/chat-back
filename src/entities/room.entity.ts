@@ -9,5 +9,6 @@ export class RoomEntity {
     @Column('uuid') userII: string
     @OneToMany(type => MessageEntity, message => message.room)
     messages: MessageEntity[];
+    @Column({default: 0}) count: number;
 
 }

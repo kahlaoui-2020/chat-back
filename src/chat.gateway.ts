@@ -8,6 +8,8 @@ import { Socket } from 'socket.io';
 import { AuthService } from './auth/auth.service';
 import { UsersService } from './users/users.service';
 import {Cache} from 'cache-manager';
+import { MessagesService } from './messages/messages.service';
+import { CreateMessageDto } from './messages/dto/create-message.dto';
 var clc = require("cli-color");
 
 @WebSocketGateway({
@@ -21,15 +23,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     constructor(
         private auth: AuthService,
         private user: UsersService,
+        private messageService: MessagesService,
         @Inject(CACHE_MANAGER)
         private cacheManager: Cache) { }
 
     @SubscribeMessage('message')
-    async handleEvent(client: Socket, @MessageBody() { sender,  to, message, }) {
+    async handleEvent(client: Socket, @MessageBody() { sender,  to, message, roomId}) {
         console.log(to)
         const socket = await this.cacheManager.get(to).then((u: string) => {return u}); 
         console.log('to: ', socket, ', message: ', message)
-        this.server.to(socket).emit('message', message, sender);
+        this.server.to(socket).emit('message', message, sender, roomId);
+
+        const createMessage: CreateMessageDto = {
+            room: {
+                id: roomId,
+            },
+            sender: sender,
+            content: message, 
+        } 
+        this.messageService.create(createMessage)
+        console.log(message, sender, roomId)
        // this.server.send(message);
     }
 
