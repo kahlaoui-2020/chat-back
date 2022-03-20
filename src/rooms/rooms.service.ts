@@ -26,7 +26,7 @@ export class RoomsService {
       `CASE
         WHEN userI = '${id}' THEN userII
         WHEN userII = '${id}' THEN userI
-        END`, 'id').addSelect('id', 'roomId')
+        END`, 'id').addSelect('id', 'roomId').addSelect('count', 'msgCount')
     .having('id is not null');
     const rooms = this.roomRepository
       .createQueryBuilder('room')

@@ -9,4 +9,5 @@ export interface Room {
     viewI?: Timestamp<Date>,
     viewII?: Timestamp<Date>,
     message?: Message[];
+    count?:number
 }
