@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserEntity } from 'src/entities/user.entity';
 import { Login } from 'src/models/login.model';
@@ -16,8 +16,10 @@ export class AuthService {
 
     async validateUser(email: string, pass: string): Promise<any> {
         const user = await this.userService.findByEmail(email);
-        if (user) return user
-        throw new Error()
+        console.log(user);
+        if (user.active) return user
+        else if(!user.active) throw new Error('inactive-account');
+        else throw new Error();
     }
 
     async login(login: Login) {
@@ -26,9 +28,8 @@ export class AuthService {
             user = await this.validateUser(login.email, login.password);
 
         } catch (err) {
-            throw new UnauthorizedException(
-                `There isn't any user with email: ${login.email}`,
-            );
+            if(err.message === 'inactive-account') throw new HttpException('Inactive', HttpStatus.NOT_IMPLEMENTED);
+            else throw new HttpException('', HttpStatus.NOT_FOUND);
         }
         if (!(await user.checkPassword(login.password)))
             throw new UnauthorizedException(
