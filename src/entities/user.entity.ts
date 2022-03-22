@@ -1,5 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { RoomEntity } from './room.entity';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -7,11 +6,12 @@ export class UserEntity {
     @PrimaryGeneratedColumn('uuid') id:string;
     @Column() lastName: string;
     @Column() firstName: string;
-    @CreateDateColumn({nullable: true}) dateOfBirth: Date;
+    @Column({nullable: true}) dateOfBirth: Date;
     @Column() email: string;
     @Column({select: false}) password: string;
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;
+    @Column({type: 'bool', default: false}) active: boolean;
     
     async checkPassword(pass: string): Promise<boolean> {
         return await pass === this.password

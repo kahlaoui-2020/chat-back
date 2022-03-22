@@ -1,12 +1,13 @@
 export interface User {
 
-    id:string;
+    id?:string;
     lastName: string;
     firstName: string;
-    dateOfBirth: Date;
+    dateOfBirth?: Date;
     email: string;
     password?: string;
-    registrationDate: Date;
-    picture: string;
+    registrationDate?: Date;
+    picture?: string;
+    active?: boolean;
 
 }
