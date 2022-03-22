@@ -7,7 +7,7 @@ export class UserEntity {
     @Column() lastName: string;
     @Column() firstName: string;
     @Column({nullable: true}) dateOfBirth: Date;
-    @Column() email: string;
+    @Column({unique: true}) email: string;
     @Column({select: false}) password: string;
     @Column({type: 'date'}) registrationDate: Date = new Date();
     @Column({type: 'text', nullable: true}) picture: string;

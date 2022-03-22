@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
 import { FriendsEntity } from 'src/entities/friends.entity';
@@ -19,11 +19,16 @@ export class UsersService {
     private friendsRepository: Repository<FriendsEntity>
     ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.userRepository.create(createUserDto)
-    const userObject = await this.userRepository.save(user);
-    const {password, ...result} = userObject
-    return result;
+  async create(createUserDto: CreateUserDto): Promise<boolean> {
+    try {
+      const user = this.userRepository.create(createUserDto)
+      const result = await this.userRepository.save(user);
+      if(result) return true;
+      else return false
+    } catch (error) {
+      throw new HttpException('Duplicate entry', HttpStatus.CONFLICT);
+    }
+    
   }
   async createFriend(id: string, idFriend: string): Promise<any>{
     const friend = await this.friendsRepository.create({userI: id, userII: idFriend})
@@ -48,7 +53,7 @@ export class UsersService {
   }
 
   async findByEmail(email: string): Promise<User> {
-    return await this.userRepository.findOne({where: {email: email}, select: ['id', 'password']})
+    return await this.userRepository.findOne({where: {email: email}, select: ['id', 'password', 'active']})
   }
 
   async findMe(user: User): Promise<User> {
