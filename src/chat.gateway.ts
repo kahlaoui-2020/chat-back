@@ -54,17 +54,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
        const friends = await this.user.findFriends(userId);
         for (const friend of friends) {
             let socketID = await this.cacheManager.get(friend.id).then((cache) => {return cache});
+            console.log('new connection', socketID);
             if (socketID) {
                 console.log(clc.underline('emit to'), clc.blue(friend.firstName + ' ' + friend.lastName))
                 this.server.to(socketID).emit('user-connected', {
-                    socketID: me.id,
                     friendId: userId,
                 })
-                console.log(clc.underline('emit to'), clc.blue(me.id))
-                this.server.to(me.id).emit('user-connected', {
-                    socketID: socketID,
-                    friendId: friend.id,
-                });
             }  
         }
     }
@@ -75,7 +70,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
         await this.cacheManager.del(userId);
         if(! await this.cacheManager.get(userId).then(u => {return u}))
-        console.log(clc.red('null'))
+        console.log(clc.red('null', userId));
         const friends = await this.user.findFriends(userId);
         for (const friend of friends) {
             let socketID = await this.cacheManager.get(friend.id).then((cache) => {return cache});

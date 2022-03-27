@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { use } from 'passport';
 import { FriendsEntity } from 'src/entities/friends.entity';
+import { RoomEntity } from 'src/entities/room.entity';
 import { UserEntity } from 'src/entities/user.entity';
 import { Connection, DeleteResult, getManager, getRepository, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -60,7 +61,7 @@ export class UsersService {
     return await this.userRepository.findOne({where: {id: user.id}})
   }
   async findFriends(id: string): Promise<any[]> {
-    const ids: any = getManager().createQueryBuilder(FriendsEntity, 'friend')
+    const ids: any = getManager().createQueryBuilder(RoomEntity, 'friend')
     .select(
       `CASE
         WHEN userI = '${id}' THEN userII
