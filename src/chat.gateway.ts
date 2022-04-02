@@ -60,6 +60,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
                 this.server.to(socketID).emit('user-connected', {
                     friendId: userId,
                 })
+                this.server.to(me.id).emit('users-connected', {
+                    friendId: friend.id,
+                })
             }  
         }
     }
